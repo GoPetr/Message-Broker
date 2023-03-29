@@ -17,6 +17,11 @@ public class BrokerThread extends Thread {
         while (true) {
             timeModel.setTimers(LocalTime.now());
             Listener.checkSession();
+
+            if (!Listener.flag) {
+                System.out.println("No DB Connection.");
+            }
+
             if (Listener.flag) {
                 troubleHandler.callTroubleHandler(noteThread, sqlThread);
                 sqlThread.save(timeModel);

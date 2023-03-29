@@ -41,8 +41,7 @@ public class TimeDAO {
 
     private Session getSession() {
         Listener.checkSession();
-        //    return null;
-        //  }
+
         return HibernateSessionFactory.getSessionFactory().openSession();
     }
 }

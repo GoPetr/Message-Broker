@@ -12,14 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class NoteThread extends Thread {
+public class NoteThread {
     private final String FILE_NAME = System.getProperty("user.dir") + "\\src\\main\\resources\\NoteSQL.txt";
     private final Path path = Paths.get(System.getProperty("user.dir") + "\\src\\main\\resources\\NoteSQL.txt");
-
-    @Override
-    public void run() {
-        createFile();
-    }
 
     public void writingToFile(String text) {
         try {
@@ -47,7 +42,6 @@ public class NoteThread extends Thread {
             throw new RuntimeException(e);
         }
     }
-
 
     private void createFile() {
         File newFile = new File(FILE_NAME);

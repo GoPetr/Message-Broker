@@ -12,7 +12,6 @@ public class SqlThread {
         timeDAO.save(timeModel);
     }
 
-
     public List<TimeModel> getAll() {
         return timeDAO.findAll();
     }
