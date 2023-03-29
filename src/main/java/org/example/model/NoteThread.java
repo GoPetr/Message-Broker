@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class NoteThread extends Thread {
-    private final String FILE_NAME = "C:\\Users\\GoPetr\\Documents\\Java Projects\\Message Broker\\src\\main\\resources\\NoteSQL.txt";
-    private final Path path = Paths.get("C:\\Users\\GoPetr\\Documents\\Java Projects\\Message Broker\\src\\main\\resources\\NoteSQL.txt");
+    private final String FILE_NAME = System.getProperty("user.dir") + "\\src\\main\\resources\\NoteSQL.txt";
+    private final Path path = Paths.get(System.getProperty("user.dir") + "\\src\\main\\resources\\NoteSQL.txt");
 
     @Override
     public void run() {

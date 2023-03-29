@@ -6,24 +6,26 @@ public class TroubleHandler {
 
     public void callTroubleHandler(NoteThread noteThread, SqlThread sqlThread) {
 
-        List<TimeModel> allFromBD = sqlThread.getAll();
+        if (sqlThread.getMaxId() == null) {
+            return;
+        }
+        Long maxIdFromTable = sqlThread.getMaxId();
+        System.out.println("reading from file = " + noteThread.readingFromFile());
         List<TimeModel> readingFromFile = noteThread.readingFromFile();
 
         //последняя точка в БД
-        TimeModel model = allFromBD.get(allFromBD.size() - 1);
+        System.out.println("find by id: " + sqlThread.findById(maxIdFromTable));
+        TimeModel model = sqlThread.findById(maxIdFromTable);
 
         //последняя точка записи в БД и txt файле.
         for (int i = 0; i < readingFromFile.size() - 1; i++) {
             if (model.getTimers().equals(readingFromFile.get(i).getTimers())) {
+                i++;
                 //запись в БД значений которые отсутствуют
-                for (; i++ < readingFromFile.size() - 1; i++) {
-                    sqlThread.saveTimeToSQL(readingFromFile.get(i));
+                for (; i < readingFromFile.size(); i++) {
+                    sqlThread.save(readingFromFile.get(i));
                 }
             }
         }
-
-        System.out.println(allFromBD.get(allFromBD.size() - 1));
-        System.out.println();
-        System.out.println(readingFromFile.get(readingFromFile.size() - 1));
     }
 }

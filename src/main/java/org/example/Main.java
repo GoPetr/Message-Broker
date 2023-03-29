@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.model.BrokerThread;
 
-public class Main2 {
+public class Main {
 
     public static void main(String[] args) {
         BrokerThread brokerThread = new BrokerThread();
@@ -13,7 +13,9 @@ public class Main2 {
                 System.out.println(brokerThread.getAllTimesForBD());
             }
         } else {
+            brokerThread.setName("Broker Thread");
             brokerThread.start();
         }
+
     }
 }

@@ -15,17 +15,18 @@ public class BrokerThread extends Thread {
     @Override
     public void run() {
         while (true) {
+            timeModel.setTimers(LocalTime.now());
+            Listener.checkSession();
+            if (Listener.flag) {
+                troubleHandler.callTroubleHandler(noteThread, sqlThread);
+                sqlThread.save(timeModel);
+            }
+            noteThread.writingToFile(timeModel.getTimers().format(timeFormat));
             try {
-                Thread.sleep(1000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            timeModel.setTimers(LocalTime.now());
-
-            troubleHandler.callTroubleHandler(noteThread, sqlThread);
-
-            sqlThread.saveTimeToSQL(timeModel);
-            noteThread.writingToFile(timeModel.getTimers().format(timeFormat));
         }
     }
 

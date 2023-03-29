@@ -1,8 +1,6 @@
 package org.example.util;
 
 import lombok.NoArgsConstructor;
-import org.example.model.Location;
-import org.example.model.Temperature;
 import org.example.model.TimeModel;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -16,8 +14,6 @@ public class HibernateSessionFactory {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration().configure();
-                configuration.addAnnotatedClass(Location.class);
-                configuration.addAnnotatedClass(Temperature.class);
                 configuration.addAnnotatedClass(TimeModel.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());
