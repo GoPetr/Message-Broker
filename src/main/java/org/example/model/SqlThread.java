@@ -8,7 +8,6 @@ public class SqlThread {
     private final TimeDAO timeDAO = new TimeDAO();
 
     public void save(TimeModel timeModel) {
-        System.out.println("THIS IS SQL");
         timeDAO.save(timeModel);
     }
 

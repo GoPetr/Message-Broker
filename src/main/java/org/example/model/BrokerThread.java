@@ -1,21 +1,21 @@
 package org.example.model;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BrokerThread extends Thread {
     private final SqlThread sqlThread = new SqlThread();
     private final NoteThread noteThread = new NoteThread();
-    private final TimeModel timeModel = new TimeModel();
     private final TroubleHandler troubleHandler = new TroubleHandler();
-
-    DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private final TimeCreatorThread timeCreatorThread = new TimeCreatorThread();
 
     @Override
     public void run() {
+        ExecutorService service = Executors.newCachedThreadPool();
+        service.submit(timeCreatorThread);
+
         while (true) {
-            timeModel.setTimers(LocalTime.now());
             Listener.checkSession();
 
             if (!Listener.flag) {
@@ -24,9 +24,8 @@ public class BrokerThread extends Thread {
 
             if (Listener.flag) {
                 troubleHandler.callTroubleHandler(noteThread, sqlThread);
-                sqlThread.save(timeModel);
             }
-            noteThread.writingToFile(timeModel.getTimers().format(timeFormat));
+
             try {
                 sleep(1000);
             } catch (InterruptedException e) {
