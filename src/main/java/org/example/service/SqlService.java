@@ -1,14 +1,14 @@
-package org.example.model;
+package org.example.service;
 
 import org.example.dao.TimeDAO;
+import org.example.model.TimeModel;
 
 import java.util.List;
 
-public class SqlThread {
+public class SqlService {
     private final TimeDAO timeDAO = new TimeDAO();
 
     public void save(TimeModel timeModel) {
-        System.out.println("THIS IS SQL");
         timeDAO.save(timeModel);
     }
 
