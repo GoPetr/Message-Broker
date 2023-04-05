@@ -12,26 +12,19 @@ public class TimeDAO {
 
     public List<TimeModel> findAll() {
         List<TimeModel> timeModels = getSession().createQuery("From TimeModel").list();
-
         return timeModels;
     }
 
     public TimeModel findById(Long id) {
         return getSession().get(TimeModel.class, id);
-
-
     }
 
-    public Long getMaxId() { //todo как то косячно
+    public Long getMaxId() {
         List<Long> query = getSession().createQuery("select max(id) from TimeModel").list();
         return query.get(0);
-
     }
 
     public void save(TimeModel timeModel) {
-        if (getSession() == null) {
-            return;
-        }
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         session.save(timeModel);
@@ -41,7 +34,6 @@ public class TimeDAO {
 
     private Session getSession() {
         Listener.checkSession();
-
         return HibernateSessionFactory.getSessionFactory().openSession();
     }
 }

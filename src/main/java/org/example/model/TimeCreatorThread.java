@@ -1,16 +1,14 @@
 package org.example.model;
 
-import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
 
-@Getter
 public class TimeCreatorThread implements Callable<TimeModel> {
     private final TimeModel timeModel = new TimeModel();
-    private final NoteThread noteThread = new NoteThread();
+    private final NoteUtil noteUtil = new NoteUtil();
     DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @SneakyThrows
@@ -18,8 +16,7 @@ public class TimeCreatorThread implements Callable<TimeModel> {
     public TimeModel call() {
         while (true) {
             timeModel.setTimers(LocalTime.now());
-            noteThread.writingToFile(timeModel.getTimers().format(timeFormat));
-
+            noteUtil.writingToFile(timeModel.getTimers().format(timeFormat));
             Thread.sleep(1000);
         }
     }

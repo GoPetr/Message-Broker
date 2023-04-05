@@ -1,29 +1,24 @@
 package org.example.model;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BrokerThread extends Thread {
     private final SqlThread sqlThread = new SqlThread();
-    private final NoteThread noteThread = new NoteThread();
+    private final NoteUtil noteUtil = new NoteUtil();
     private final TroubleHandler troubleHandler = new TroubleHandler();
-    private final TimeCreatorThread timeCreatorThread = new TimeCreatorThread();
 
     @Override
     public void run() {
-        ExecutorService service = Executors.newCachedThreadPool();
-        service.submit(timeCreatorThread);
 
         while (true) {
             Listener.checkSession();
 
             if (!Listener.flag) {
-                System.out.println("No DB Connection.");
+                System.out.println("Flag is FALSE.");
             }
 
             if (Listener.flag) {
-                troubleHandler.callTroubleHandler(noteThread, sqlThread);
+                troubleHandler.callTroubleHandler(noteUtil, sqlThread);
             }
 
             try {

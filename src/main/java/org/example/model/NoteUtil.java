@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class NoteThread {
+public class NoteUtil {
     private final String FILE_NAME = System.getProperty("user.dir") + "\\src\\main\\resources\\NoteSQL.txt";
     private final Path path = Paths.get(System.getProperty("user.dir") + "\\src\\main\\resources\\NoteSQL.txt");
 
@@ -26,7 +26,7 @@ public class NoteThread {
         }
     }
 
-    public List<TimeModel> readingFromFile() { //todo ОБЯЗАТЕЛЬНО УЗНАТЬ КАК ЭТО ДЕЛАТЬ СТРИМАМИ
+    public List<TimeModel> readingFromFile() {
         createFile();
         List<String> result;
         List<TimeModel> returnList = new ArrayList<>();
