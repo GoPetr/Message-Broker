@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.model.BrokerThread;
-import org.example.model.TimeCreatorThread;
+import org.example.service.BrokerThread;
+import org.example.service.TimeCreatorThread;
 import org.example.util.HibernateSessionFactory;
 
 import java.util.concurrent.ExecutorService;
@@ -25,9 +25,8 @@ public class Main {
                 brokerThread.setName("Broker Thread");
                 brokerThread.start();
                 brokerThread.join();
-                System.out.println("No DB Connection.");
+                System.out.println("No Database connection.");
                 HibernateSessionFactory.sessionFactory = null;
-                Thread.sleep(1000);
             }
         }
     }

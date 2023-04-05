@@ -1,6 +1,8 @@
-package org.example.model;
+package org.example.service;
 
 import lombok.SneakyThrows;
+import org.example.model.TimeModel;
+import org.example.util.NoteUtil;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

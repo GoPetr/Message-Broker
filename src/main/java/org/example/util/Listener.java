@@ -1,6 +1,4 @@
-package org.example.model;
-
-import org.example.util.HibernateSessionFactory;
+package org.example.util;
 
 public class Listener {
     public static boolean flag;

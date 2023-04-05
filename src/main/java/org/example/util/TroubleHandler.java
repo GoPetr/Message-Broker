@@ -1,25 +1,28 @@
-package org.example.model;
+package org.example.util;
+
+import org.example.model.TimeModel;
+import org.example.service.SqlService;
 
 import java.util.List;
 
 public class TroubleHandler {
 
-    public synchronized void callTroubleHandler(NoteUtil noteUtil, SqlThread sqlThread) {
+    public void callTroubleHandler(NoteUtil noteUtil, SqlService sqlService) {
 
         List<TimeModel> readingFromFile = noteUtil.readingFromFile();
 
         //if DB is null
-        if (sqlThread.getMaxId() == null) {
+        if (sqlService.getMaxId() == null) {
             for (int j = 0; j < readingFromFile.size() - 1; j++) {
-                sqlThread.save(readingFromFile.get(j));
+                sqlService.save(readingFromFile.get(j));
                 return;
             }
         }
 
-        Long maxIdFromTable = sqlThread.getMaxId();
+        Long maxIdFromTable = sqlService.getMaxId();
 
         //last record in DB
-        TimeModel model = sqlThread.findById(maxIdFromTable);
+        TimeModel model = sqlService.findById(maxIdFromTable);
 
         //last record in DB and txt file
         boolean flag = false;
@@ -29,7 +32,7 @@ public class TroubleHandler {
                 flag = true;
                 //insert records to DB
                 for (; i < readingFromFile.size(); i++) {
-                    sqlThread.save(readingFromFile.get(i));
+                    sqlService.save(readingFromFile.get(i));
                 }
             }
         }
@@ -37,7 +40,7 @@ public class TroubleHandler {
         //if no matches in the DB, then write down the entire file
         if (!flag) {
             for (int j = 0; j < readingFromFile.size() - 1; j++) {
-                sqlThread.save(readingFromFile.get(j));
+                sqlService.save(readingFromFile.get(j));
             }
         }
     }

@@ -1,4 +1,6 @@
-package org.example.model;
+package org.example.util;
+
+import org.example.model.TimeModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,9 +46,8 @@ public class NoteUtil {
     }
 
     private void createFile() {
-        File newFile = new File(FILE_NAME);
         try {
-            newFile.createNewFile();
+            new File(FILE_NAME).createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
