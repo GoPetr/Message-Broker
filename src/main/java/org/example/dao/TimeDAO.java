@@ -14,15 +14,6 @@ public class TimeDAO {
         return timeModels;
     }
 
-    public TimeModel findById(Long id) {
-        return getSession().get(TimeModel.class, id);
-    }
-
-    public Long getMaxId() {
-        List<Long> query = getSession().createQuery("select max(id) from TimeModel").list();
-        return query.get(0);
-    }
-
     public void save(TimeModel timeModel) {
         Session session = getSession();
         Transaction transaction = session.beginTransaction();

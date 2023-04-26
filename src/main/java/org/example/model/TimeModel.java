@@ -25,7 +25,6 @@ public class TimeModel {
     @Override
     public String toString() {
         return timers.toString();
-
     }
 }
 

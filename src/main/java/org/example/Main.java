@@ -1,32 +1,33 @@
 package org.example;
 
-import org.example.service.BrokerThread;
-import org.example.service.TimeCreatorThread;
-import org.example.util.HibernateSessionFactory;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import lombok.SneakyThrows;
+import org.example.util.SqlService;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    @SneakyThrows
+    public static void main(String[] args) {
+        SqlService sqlService = new SqlService();
+
         if (args.length != 0) {
             if (args[0].equals("-p")) {
-                BrokerThread brokerThread = new BrokerThread();
-                System.out.println(brokerThread.getAllTimesForBD());
+                System.out.println(sqlService.getAll());
             }
         } else {
-            TimeCreatorThread timeCreatorThread = new TimeCreatorThread();
-            ExecutorService service = Executors.newCachedThreadPool();
-            service.submit(timeCreatorThread);
+            TimeCreatorQueueThread timeCreatorQueueThread = new TimeCreatorQueueThread();
+            timeCreatorQueueThread.start();
 
             while (true) {
-                BrokerThread brokerThread = new BrokerThread();
-                brokerThread.setName("Broker Thread");
-                brokerThread.start();
-                brokerThread.join();
-                System.out.println("No Database connection.");
-                HibernateSessionFactory.sessionFactory = null;
+                Thread.sleep(1);
+                try {
+                    if(!timeCreatorQueueThread.getTimes().isEmpty()) {
+                        sqlService.save(timeCreatorQueueThread.getTimes().getFirst());
+                        timeCreatorQueueThread.getTimes().removeFirst();
+                    }
+                } catch (Exception e) {
+                    System.out.println("We have a problem");
+                    Thread.sleep(5000);
+                }
             }
         }
     }
