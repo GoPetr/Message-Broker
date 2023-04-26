@@ -1,6 +1,5 @@
 package org.example.dao;
 
-import org.example.model.Listener;
 import org.example.model.TimeModel;
 import org.example.util.HibernateSessionFactory;
 import org.hibernate.Session;
@@ -27,8 +26,6 @@ public class TimeDAO {
     }
 
     private Session getSession() {
-        Listener.checkSession();
-
         return HibernateSessionFactory.getSessionFactory().openSession();
     }
 }

@@ -1,10 +1,11 @@
-package org.example.model;
+package org.example.util;
 
 import org.example.dao.TimeDAO;
+import org.example.model.TimeModel;
 
 import java.util.List;
 
-public class SqlWorker {
+public class SqlService {
     private final TimeDAO timeDAO = new TimeDAO();
 
     public void save(TimeModel timeModel) {

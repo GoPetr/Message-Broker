@@ -1,14 +1,15 @@
-package org.example.model;
+package org.example;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.example.model.TimeModel;
 
 import java.time.LocalTime;
 import java.util.ArrayDeque;
 
 @Getter
 public class TimeCreatorQueueThread extends Thread {
-    ArrayDeque<TimeModel> times = new ArrayDeque<>();
+   private ArrayDeque<TimeModel> times = new ArrayDeque<>();
 
     @SneakyThrows
     @Override
