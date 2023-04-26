@@ -1,21 +1,26 @@
 package org.example.service;
 
 import org.example.model.TimeModel;
+import org.example.util.HibernateSessionFactory;
 import org.example.util.TroubleHandler;
 import org.example.util.Listener;
 import org.example.util.NoteUtil;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class BrokerThread extends Thread {
+import static java.lang.Thread.sleep;
+
+public class BrokerThread implements Callable<TimeModel> {
     private final SqlService sqlService = new SqlService();
     private final NoteUtil noteUtil = new NoteUtil();
     private final TroubleHandler troubleHandler = new TroubleHandler();
 
-    @Override
-    public void run() {
+
+    public TimeModel call() throws Exception {
 
         while (true) {
+            try{
             Listener.checkSession();
 
             if (!Listener.flag) {
@@ -33,11 +38,22 @@ public class BrokerThread extends Thread {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+            }}
+            catch (Exception e){
+                try {
+                    HibernateSessionFactory.sessionFactory = null;
+                    sleep(3000);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
+
         }
     }
 
     public List<TimeModel> getAllTimesForBD() {
         return sqlService.getAll();
     }
+
+
 }

@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,16 +29,15 @@ public class NoteUtil {
 
     public List<TimeModel> readingFromFile() {
         createFile();
-        List<String> result;
-        List<TimeModel> returnList = new ArrayList<>();
+
         try (Stream<String> lines = Files.lines(path)) {
-            result = lines.collect(Collectors.toList());
-            for (String str : result) {
-                TimeModel timeModel = new TimeModel();
-                timeModel.setTimers(LocalTime.parse(str));
-                returnList.add(timeModel);
-            }
-            return returnList;
+            return lines
+                    .map(str -> {
+                        TimeModel timeModel = new TimeModel();
+                        timeModel.setTimers(LocalTime.parse(str));
+                        return timeModel;
+                    })
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

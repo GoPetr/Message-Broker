@@ -1,11 +1,14 @@
 package org.example;
 
+import org.example.model.TimeModel;
 import org.example.service.BrokerThread;
 import org.example.service.TimeCreatorThread;
-import org.example.util.HibernateSessionFactory;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -16,18 +19,18 @@ public class Main {
                 System.out.println(brokerThread.getAllTimesForBD());
             }
         } else {
+            BrokerThread brokerThread = new BrokerThread();
             TimeCreatorThread timeCreatorThread = new TimeCreatorThread();
             ExecutorService service = Executors.newCachedThreadPool();
-            service.submit(timeCreatorThread);
 
-            while (true) {
-                BrokerThread brokerThread = new BrokerThread();
-                brokerThread.setName("Broker Thread");
-                brokerThread.start();
-                brokerThread.join();
-                System.out.println("No Database connection.");
-                HibernateSessionFactory.sessionFactory = null;
-            }
+            List<Future<TimeModel>> futures = service.invokeAll(List.of(brokerThread, timeCreatorThread));
+            futures.stream().map(cf -> {
+                try {
+                    return cf.get();
+                } catch (Exception e) {
+                    return null;
+                }
+            }).collect(Collectors.toList());
         }
     }
 }
