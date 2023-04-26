@@ -1,21 +1,26 @@
 package org.example;
 
-import org.example.model.BrokerThread;
+import lombok.SneakyThrows;
+import org.example.model.SqlWorker;
+import org.example.model.TimeCreatorQueueThread;
 
 public class Main {
 
+    @SneakyThrows
     public static void main(String[] args) {
-        BrokerThread brokerThread = new BrokerThread();
+        TimeCreatorQueueThread timeCreatorQueueThread = new TimeCreatorQueueThread();
+        timeCreatorQueueThread.start();
+        SqlWorker sqlWorker = new SqlWorker();
 
-        System.out.println(args.length);
-        if (args.length != 0) {
-            if (args[0].equals("-p")) {
-                System.out.println(brokerThread.getAllTimesForBD());
+        while (true) {
+            try {
+                sqlWorker.save(timeCreatorQueueThread.getTimes().getFirst());
+                timeCreatorQueueThread.getTimes().removeFirst();
+
+            } catch (Exception e) {
+                System.out.println("EBUSHKI VOROBUSHKI");
+                Thread.sleep(1500);
             }
-        } else {
-            brokerThread.setName("Broker Thread");
-            brokerThread.start();
         }
-
     }
 }

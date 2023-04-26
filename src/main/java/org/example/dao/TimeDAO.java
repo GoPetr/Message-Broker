@@ -12,20 +12,7 @@ public class TimeDAO {
 
     public List<TimeModel> findAll() {
         List<TimeModel> timeModels = getSession().createQuery("From TimeModel").list();
-
         return timeModels;
-    }
-
-    public TimeModel findById(Long id) {
-        return getSession().get(TimeModel.class, id);
-
-
-    }
-
-    public Long getMaxId() { //todo как то косячно
-        List<Long> query = getSession().createQuery("select max(id) from TimeModel").list();
-        return query.get(0);
-
     }
 
     public void save(TimeModel timeModel) {
