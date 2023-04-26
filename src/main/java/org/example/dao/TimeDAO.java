@@ -15,9 +15,6 @@ public class TimeDAO {
     }
 
     public void save(TimeModel timeModel) {
-        if (getSession() == null) {
-            return;
-        }
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         session.save(timeModel);

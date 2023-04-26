@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 @NoArgsConstructor
 public class HibernateSessionFactory {
-    private static SessionFactory sessionFactory;
+    public static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
@@ -20,7 +20,7 @@ public class HibernateSessionFactory {
 
                 sessionFactory = configuration.buildSessionFactory(builder.build());
             } catch (Exception e) {
-                System.out.println("Исключение!" + e);
+                System.out.println("Exception!" + e);
             }
         }
         return sessionFactory;
